@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskFlow - Gestión de tareas</title>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <div>
+                <h2>TaskFlow</h2>
+                <span>Productividad</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <button class="nav-item active" data-section="dashboard">
+                <i class="fa-solid fa-chart-pie"></i>
+                Dashboard
+            </button>
+
+            <button class="nav-item" data-section="tasks">
+                <i class="fa-solid fa-list-check"></i>
+                Mis tareas
+            </button>
+
+            <button class="nav-item" data-section="completed">
+                <i class="fa-solid fa-circle-check"></i>
+                Completadas
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button id="themeButton" class="theme-button">
+                <i class="fa-solid fa-moon"></i>
+                Modo oscuro
+            </button>
+
+            <div class="user-card">
+
+                <div class="avatar">
+                    JD
+                </div>
+
+                <div>
+                    <strong>Mi espacio</strong>
+                    <span>Organiza tu día</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <p class="welcome">Hola 👋</p>
+                <h1>Tu productividad</h1>
+            </div>
+
+            <button class="primary-button" id="newTaskButton">
+                <i class="fa-solid fa-plus"></i>
+                Nueva tarea
+            </button>
+
+        </header>
+
+
+        <section id="dashboardSection">
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Total de tareas</span>
+                        <strong id="totalTasks">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Completadas</span>
+                        <strong id="completedTasks">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div>
+                        <span>Pendientes</span>
+                        <strong id="pendingTasks">0</strong>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <div>
+                        <span>Progreso</span>
+                        <strong id="progressPercentage">0%</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h2>Progreso general</h2>
+                            <p>Tu avance en las tareas</p>
+                        </div>
+                    </div>
+
+                    <div class="progress-container">
+
+                        <div class="progress-circle">
+                            <div>
+                                <strong id="circlePercentage">0%</strong>
+                                <span>completado</span>
+                            </div>
+                        </div>
+
+                        <div class="progress-info">
+
+                            <div>
+                                <span>Completadas</span>
+                                <strong id="progressCompleted">0</strong>
+                            </div>
+
+                            <div>
+                                <span>Pendientes</span>
+                                <strong id="progressPending">0</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h2>Resumen</h2>
+                            <p>Estado actual</p>
+                        </div>
+                    </div>
+
+                    <div class="summary">
+
+                        <div class="summary-row">
+                            <span>
+                                <i class="fa-solid fa-circle red"></i>
+                                Alta prioridad
+                            </span>
+
+                            <strong id="highPriority">0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>
+                                <i class="fa-solid fa-circle yellow"></i>
+                                Prioridad media
+                            </span>
+
+                            <strong id="mediumPriority">0</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>
+                                <i class="fa-solid fa-circle green"></i>
+                                Prioridad baja
+                            </span>
+
+                            <strong id="lowPriority">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel tasks-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h2>Tareas recientes</h2>
+                        <p>Las tareas que requieren tu atención</p>
+                    </div>
+
+                    <button class="text-button" id="viewAllButton">
+                        Ver todas
+                    </button>
+
+                </div>
+
+                <div id="recentTasks" class="task-list"></div>
+
+            </div>
+
+        </section>
+
+
+        <section id="tasksSection" class="hidden">
+
+            <div class="section-header">
+
+                <div>
+                    <h1>Mis tareas</h1>
+                    <p>Administra todas tus actividades</p>
+                </div>
+
+            </div>
+
+            <div class="filters">
+
+                <div class="search-box">
+                    <i class="fa-solid fa-search"></i>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Buscar tareas..."
+                    >
+                </div>
+
+                <select id="priorityFilter">
+                    <option value="all">Todas las prioridades</option>
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+
+                <select id="categoryFilter">
+                    <option value="all">Todas las categorías</option>
+                    <option value="Trabajo">Trabajo</option>
+                    <option value="Universidad">Universidad</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Otros">Otros</option>
+                </select>
+
+            </div>
+
+            <div id="allTasks" class="task-list"></div>
+
+        </section>
+
+
+        <section id="completedSection" class="hidden">
+
+            <div class="section-header">
+
+                <div>
+                    <h1>Tareas completadas</h1>
+                    <p>Todo lo que ya has conseguido</p>
+                </div>
+
+                <button id="clearCompleted" class="danger-button">
+                    <i class="fa-solid fa-trash"></i>
+                    Limpiar completadas
+                </button>
+
+            </div>
+
+            <div id="completedList" class="task-list"></div>
+
+        </section>
+
+    </main>
+
+
+    <div id="taskModal" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+                    <h2>Nueva tarea</h2>
+                    <p>Crea una actividad para organizar tu día</p>
+                </div>
+
+                <button id="closeModal" class="close-button">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <form id="taskForm">
+
+                <label>
+                    Título
+
+                    <input
+                        type="text"
+                        id="taskTitle"
+                        placeholder="Ej. Estudiar Python"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Descripción
+
+                    <textarea
+                        id="taskDescription"
+                        placeholder="Describe brevemente la tarea..."
+                    ></textarea>
+                </label>
+
+
+                <div class="form-grid">
+
+                    <label>
+                        Prioridad
+
+                        <select id="taskPriority">
+
+                            <option value="alta">
+                                🔴 Alta
+                            </option>
+
+                            <option value="media" selected>
+                                🟡 Media
+                            </option>
+
+                            <option value="baja">
+                                🟢 Baja
+                            </option>
+
+                        </select>
+
+                    </label>
+
+
+                    <label>
+                        Categoría
+
+                        <select id="taskCategory">
+
+                            <option value="Universidad">
+                                Universidad
+                            </option>
+
+                            <option value="Trabajo">
+                                Trabajo
+                            </option>
+
+                            <option value="Personal">
+                                Personal
+                            </option>
+
+                            <option value="Otros">
+                                Otros
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button type="button" id="cancelButton" class="secondary-button">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="primary-button">
+                        <i class="fa-solid fa-plus"></i>
+                        Crear tarea
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1791402819170,
+        "title": "Taller Desarrollo con IA",
+        "description": "",
+        "priority": "alta",
+        "category": "Universidad",
+        "completed": false,
+        "created_at": "2026-10-07 14:53"
+    },
+    {
+        "id": 1791402831735,
+        "title": "Englishlab",
+        "description": "",
+        "priority": "media",
+        "category": "Universidad",
+        "completed": true,
+        "created_at": "2026-10-07 14:53"
+    }
+]
